@@ -1,0 +1,17 @@
+spotify:
+   credentials:
+      client-id: 7d16a4ef977a4f8abddaed7f35cf1aa5
+      client-secret: c09679fdde4e4f7e86a99ccf97c8aa4d
+   token:
+      url: https://accounts.spotify.com/api/token
+   category-playlist: 
+      url: https://api.spotify.com/v1/browse/categories/%s/playlists
+   playlist-id:
+      url: https://api.spotify.com/v1/playlists/
+      
+openweather:
+   key: 2c8ac1beadcda2866591931bd7acb156
+   get: 
+      city-name: https://api.openweathermap.org/data/2.5/weather?units=metric
+      geo-loc: https://api.openweathermap.org/data/2.5/weather?&units=metric&lat=
+  
