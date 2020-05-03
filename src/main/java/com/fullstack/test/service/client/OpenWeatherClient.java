@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import com.fullstack.test.config.ApplicationConfig;
-import com.fullstack.test.exception.http.BadRequestException;
+import com.fullstack.test.exception.http.NotFoundException;
 import com.fullstack.test.response.OpenWeatherResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -23,17 +23,21 @@ public class OpenWeatherClient {
 		String url = applicationConfig.getOpenWeatherGetByCityName() + "&q=" + cityName + 
 				"&appid=" + applicationConfig.getOpenWeatherKey();
 		
-		ResponseEntity<OpenWeatherResponse> weather = restTemplateBuilder.build().exchange(
-				url,
-				HttpMethod.GET,
-				null,
-				OpenWeatherResponse.class);
-		
-		return weather.getBody();
+		try {
+			ResponseEntity<OpenWeatherResponse> weather = restTemplateBuilder.build().exchange(
+					url,
+					HttpMethod.GET,
+					null,
+					OpenWeatherResponse.class);
+			
+			return weather.getBody();
+		} catch (HttpStatusCodeException e) {
+			throw new NotFoundException();
+		}
 	}
 	
-	public OpenWeatherResponse getTempByLogLat(String log, String lat) {
-		String url = applicationConfig.getOpenWeatherGetByGeoLoc() + lat + "&log=" + log + 
+	public OpenWeatherResponse getTempByLogLat(Double lon, Double lat) {
+		String url = applicationConfig.getOpenWeatherGetByGeoLoc() + lat + "&lon=" + lon + 
 				"&appid=" + applicationConfig.getOpenWeatherKey();
 		try {
 			ResponseEntity<OpenWeatherResponse> weather = restTemplateBuilder.build().exchange(
@@ -43,7 +47,7 @@ public class OpenWeatherClient {
 					OpenWeatherResponse.class);
 			return weather.getBody();
 		} catch (HttpStatusCodeException e) {
-			throw new BadRequestException();
+			throw new NotFoundException();
 		}
 	}
 }

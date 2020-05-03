@@ -17,7 +17,7 @@ import com.fullstack.test.validator.TestValidator;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/musics")
+@RequestMapping("/playlists")
 @RequiredArgsConstructor
 public class TestController {
 
@@ -26,14 +26,15 @@ public class TestController {
 	@GetMapping("/weather")
 	public ResponseEntity<List<SpotifyPlaylistResponse>> getPlaylistByTemperature(
 			@RequestParam(name = "city-name", required = false) String cityName,
-			@RequestParam(name = "lat", required = false) String lat,
-			@RequestParam(name = "log", required = false) String log) {
-		TestValidator.validateUserEntry(cityName, lat, log);
+			@RequestParam(name = "lat", required = false) Double lat,
+			@RequestParam(name = "lon", required = false) Double lon) {
+		
+		TestValidator.validateUserEntry(cityName, lat, lon);
 
-		return ResponseEntity.ok(testService.getPlaylistByLocation(cityName, lat, log));
+		return ResponseEntity.ok(testService.getPlaylistByLocation(cityName, lat, lon));
 	}
 	
-	@GetMapping("/playlists/{playlist-id}")
+	@GetMapping("/{playlist-id}")
 	public ResponseEntity<List<SpotifyTrackResponse>> getTracksByPlaylistId(
 			@PathVariable(name = "playlist-id") String playlistId) {
 		return ResponseEntity.ok(testService.getTracksByPlaylistId(playlistId));

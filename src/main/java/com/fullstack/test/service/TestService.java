@@ -27,15 +27,15 @@ public class TestService {
 		return tracksToResponse(tracks);
 	}
 	
-	public List<SpotifyPlaylistResponse> getPlaylistByLocation(String cityName, String lat, String log) {
+	public List<SpotifyPlaylistResponse> getPlaylistByLocation(String cityName, Double lat, Double lon) {
 		if(cityName != null) {
 			OpenWeatherResponse tempByCityName = openWeatherClient.getTempByCityName(cityName);
-			String categoryByTemp = getSuggestionByTemp(Integer.valueOf(tempByCityName.getMain().getTemp()));
+			String categoryByTemp = getSuggestionByTemp(tempByCityName.getMain().getTemp());
 			
 			return playlistToResponse(spotifyClient.getPlaylists(categoryByTemp));
 		} else {
-			OpenWeatherResponse tempByLogLat = openWeatherClient.getTempByLogLat(log, lat);
-			String categoryByTemp = getSuggestionByTemp(Integer.valueOf(tempByLogLat.getMain().getTemp()));
+			OpenWeatherResponse tempByLogLat = openWeatherClient.getTempByLogLat(lon, lat);
+			String categoryByTemp = getSuggestionByTemp(tempByLogLat.getMain().getTemp());
 			
 			return playlistToResponse(spotifyClient.getPlaylists(categoryByTemp));
 		}
@@ -46,14 +46,14 @@ public class TestService {
 	 * @param integer temperature
 	 * @return string category
 	 */
-	private String getSuggestionByTemp(Integer temperature) {
+	private String getSuggestionByTemp(Double temperature) {
 		String category = null;
 
 		if(temperature > 30) {
 			category = "party";
-		} else if (temperature >= 15 || temperature <= 30) {
+		} else if (temperature >= 15 && temperature <= 30) {
 			category = "pop";
-		} else if (temperature >= 10 || temperature <= 14) {
+		} else if (temperature >= 10 && temperature <= 14) {
 			category = "rock";
 		} else {
 			category = "classical";

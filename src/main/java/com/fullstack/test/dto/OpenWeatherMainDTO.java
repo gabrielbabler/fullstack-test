@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class OpenWeatherMainDTO {
 
 	@JsonProperty("temp")
-	private String temp;
+	private Double temp;
 }
